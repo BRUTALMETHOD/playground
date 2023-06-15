@@ -44,6 +44,37 @@ impl Solution {
         Self::perform_quick_sort(&mut input, 0, input_length as i32);
         input.to_vec()
     }
+    fn perform_merge_sort(input: Vec<i32>) -> Vec<i32> {
+        // split into 2
+
+        let m = input.len() / 2;
+        println!("{:?}", m);
+        let mut return_array = Vec::new();
+        if m > 1 {
+            let first_half: Vec<i32> = input[0..m].into();
+            let second_half: Vec<i32> = input[m + 1..input.len()].into();
+            let sorted_first = Self::perform_merge_sort(first_half);
+            let sorted_second = Self::perform_merge_sort(second_half);
+            let mut i = 0;
+            let mut j = 0;
+            while i < sorted_first.len() && j < sorted_second.len() {
+                if sorted_first[i] < sorted_first[j] {
+                    return_array.push(sorted_first[i]);
+                    i = i + 1;
+                } else {
+                    return_array.push(sorted_second[j]);
+                    j = j + 1;
+                }
+            }
+        }
+        return_array
+    }
+    pub fn merge_sort(&self, mut input: Vec<i32>) -> Vec<i32> {
+        // functions here
+        // merge sort works by spliting 0 to m , m+1 to r
+        //
+        Self::perform_merge_sort(input).to_vec()
+    }
 }
 
 fn generate_random_vector(c: i32) -> Vec<i32> {
@@ -55,10 +86,12 @@ fn generate_random_vector(c: i32) -> Vec<i32> {
 
 fn main() {
     let solution = Solution {};
-    for i in (0..30).collect::<Vec<i32>>() {
-        let ans = solution.quick_sort(generate_random_vector(i));
-        println!("output: {:?}", ans);
-    }
-    let ans = solution.quick_sort(generate_random_vector(10));
-    println!("output: {:?}", ans);
+    // #for i in (0..30).collect::<Vec<i32>>() {
+    //     let ans = solution.quick_sort(generate_random_vector(i));
+    //     println!("output: {:?}", ans);
+    // }
+    // let ans = solution.quick_sort(generate_random_vector(10));
+    // println!("output: {:?}", ans);
+    let ans = solution.merge_sort(generate_random_vector(10));
+    println!("output: {:?}", ans)
 }
