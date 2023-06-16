@@ -1,4 +1,4 @@
-use rand::prelude::*;
+use rand::{prelude::*, Error};
 struct Solution {}
 
 impl Solution {
@@ -47,18 +47,47 @@ impl Solution {
     fn perform_merge_sort(input: Vec<i32>) -> Vec<i32> {
         // split into 2
 
+        println!("Performing split on {:?}", input);
         let m = input.len() / 2;
-        println!("{:?}", m);
         let mut return_array = Vec::new();
-        if m > 1 {
+        if input.len() > 1 {
             let first_half: Vec<i32> = input[0..m].into();
-            let second_half: Vec<i32> = input[m + 1..input.len()].into();
-            let sorted_first = Self::perform_merge_sort(first_half);
-            let sorted_second = Self::perform_merge_sort(second_half);
+            let second_half: Vec<i32> = input[m..input.len()].into();
+            println!(
+                "Array is split into {:?} and {:?} at point {:?}",
+                first_half, second_half, m
+            );
+            let mut sorted_first = Self::perform_merge_sort(first_half);
+            let mut sorted_second = Self::perform_merge_sort(second_half);
             let mut i = 0;
             let mut j = 0;
-            while i < sorted_first.len() && j < sorted_second.len() {
-                if sorted_first[i] < sorted_first[j] {
+            while i < sorted_first.len() || j < sorted_second.len() {
+                match sorted_first.get_mut(i) {
+                    Some(x) => {
+                        let tmp_first: i32 = x.clone();
+                        match sorted_second.get_mut(j) {
+                            Some(x) => {
+                                let tmp_second: i32 = x.clone();
+                            }
+                            None => {
+                                return_array.push(tmp_first);
+                                break;
+                            }
+                        }
+                    }
+                    None => match sorted_second.get_mut(j) {
+                        Some(x) => {
+                            return_array.push(x.clone());
+                            break;
+                        }
+                        None => {}
+                    },
+                }
+                println!(
+                    "Performing merge for {:?} with {:?} into array {:?}",
+                    sorted_first, sorted_second, return_array
+                );
+                if sorted_first[i] < sorted_second[j] {
                     return_array.push(sorted_first[i]);
                     i = i + 1;
                 } else {
@@ -66,13 +95,17 @@ impl Solution {
                     j = j + 1;
                 }
             }
+        } else {
+            return_array.push(input[0]);
         }
+        println!("Returning {:?} to the previous function", return_array);
         return_array
     }
     pub fn merge_sort(&self, mut input: Vec<i32>) -> Vec<i32> {
         // functions here
         // merge sort works by spliting 0 to m , m+1 to r
         //
+        println!("Starting Array: {:?}", input);
         Self::perform_merge_sort(input).to_vec()
     }
 }
