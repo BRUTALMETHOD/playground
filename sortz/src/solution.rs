@@ -104,4 +104,23 @@ impl Solution {
         debugprintln!("Starting Array: {:?}", input);
         Self::perform_merge_sort(input).to_vec()
     }
+    pub fn insertion_sort(&self, input: Vec<i32>) -> Vec<i32> {
+        // loop across N, find smallest and swap
+        let mut i = 0;
+        let mut j = 0;
+        while i < input.len() {
+            let mut tmp = i;
+            while j < input.len() {
+                if input[j] < input[tmp] {
+                    tmp = j;
+                }
+                j += 1;
+            }
+            if input[tmp] > input[i] {
+                &input.swap(i, tmp);
+            }
+            i += 1;
+        }
+        input
+    }
 }
