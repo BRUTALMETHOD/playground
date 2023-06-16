@@ -45,8 +45,6 @@ impl Solution {
         input.to_vec()
     }
     fn perform_merge_sort(input: Vec<i32>) -> Vec<i32> {
-        // split into 2
-
         debugprintln!("Performing split on {:?}", input);
         let m = input.len() / 2;
         let mut return_array = Vec::new();
