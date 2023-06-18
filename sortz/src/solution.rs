@@ -104,7 +104,7 @@ impl Solution {
         debugprintln!("Starting Array: {:?}", input);
         Self::perform_merge_sort(input).to_vec()
     }
-    pub fn insertion_sort(&self, input: Vec<i32>) -> Vec<i32> {
+    pub fn insertion_sort(&self, mut input: Vec<i32>) -> Vec<i32> {
         // loop across N, find smallest and swap
         let mut i = 0;
         let mut j = 0;
@@ -117,7 +117,7 @@ impl Solution {
                 j += 1;
             }
             if input[tmp] > input[i] {
-                &input.swap(i, tmp);
+                input.swap(i, tmp);
             }
             i += 1;
         }
